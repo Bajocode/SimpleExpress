@@ -3,9 +3,14 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const httpError = require('http-errors');
-const IndexRouter = require('./routes/IndexRouter');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 const app = express();
+const IndexRouter = require('./routes/IndexRouter');
+
+mongoose.connect('mongodb://localhost:27017/test');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
