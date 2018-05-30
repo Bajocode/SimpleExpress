@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const httpError = require('http-errors');
 const mongoose = require('mongoose');
@@ -8,7 +9,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 
 const app = express();
-const IndexRouter = require('./routes/IndexRouter');
+const router = require('./router');
 
 mongoose.connect('mongodb://localhost:27017/test');
 
@@ -19,9 +20,16 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: '49?4_bY!y@M4q2*2]L|f',
+  resave: true,
+  saveUninitialized: true,
+}));
+app.use(flash());
 
-app.use('/', IndexRouter);
+app.use(router);
 
 app.use((req, res, next) => {
   next(httpError(404));
