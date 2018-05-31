@@ -1,12 +1,12 @@
 <% include _header %>
 
-<h1>Welcome to Learn pannekoek</h1>
+<h1>Welcome</h1>
 
 <% users.forEach(function(user) { %>
   <div class="panel panel-default">
     <div class="panel-heading">
-      <a href="/users/<% user.username %>">
-        <%= user.name() %>
+      <a href="/users/<%= user.username %>">
+        <%= user.getName() %>
       </a>
     </div>  
     <% if (user.bio) { %>

@@ -17,11 +17,10 @@ Router.get('/', (req, res, next) => {
       if (err) return next(err);
       return res.render('index', { users });
     });
-  res.render('index', { title: 'Home' });
 });
 
-Router.route('/signup')
-  .get((req, res) => res.render('signup'))
-  .post((req, res) => res.redirect('/signup'));
+// Router.route('/signup')
+//   .get((req, res) => res.render('signup'))
+//   .post((req, res) => res.redirect('/signup'));
 
 module.exports = Router;
