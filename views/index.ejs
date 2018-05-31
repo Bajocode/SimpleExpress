@@ -3,15 +3,20 @@
 <h1>Welcome</h1>
 
 <% users.forEach(function(user) { %>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <a href="/users/<%= user.username %>">
+  <div class="card text-center">
+
+    <div class="card-body">
+      <h5 class="card-title"><%= user.getName() %></h5>    
+      <% if (user.bio) { %> 
+        <p class="card-text"><%= user.bio %></p>
+      <% } %>
+      <a href="/users/<%= user.username %>" class="btn btn-primary">
         <%= user.getName() %>
       </a>
-    </div>  
-    <% if (user.bio) { %>
-      <div class="panel-body"><%= user.bio %></div>
-    <% } %>
+    </div>
+    <div class="card-footer text-muted">
+      <%= user.createdAt %>  
+    </div>
   </div>
 <% }) %>
 

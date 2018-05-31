@@ -7,11 +7,14 @@ const httpError = require('http-errors');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const passportConfig = require('./passportConfig');
 
 const app = express();
 const router = require('./router');
 
 mongoose.connect('mongodb://localhost:27017/test');
+passportConfig();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -19,15 +22,17 @@ app.set('view engine', 'ejs');
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  secret: '49?4_bY!y@M4q2*2]L|f',
-  resave: true,
-  saveUninitialized: true,
+  secret: '49?4_bY!y@M4q2*2]L|f', // session encryption
+  resave: true, // update session regardless of modifications
+  saveUninitialized: true, // reset uninitialized sessions
 }));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(router);
 
