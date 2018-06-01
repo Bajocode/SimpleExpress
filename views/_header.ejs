@@ -15,7 +15,7 @@
         <!-- Show name if logged in -->
         <ul class ="nav navbar-nav navbar-right">
           <% if (currentUser) { %>
-            <li><a href="/edit">Hello, <% currentUser.name() %></a></li>
+            <li><a href="/edit">Hello, <%= currentUser.getName() %></a></li>
             <li><a href="/logout">Logout</a></li>
           <% } else { %>
           <li><a href="/login">Login</a></li>
@@ -27,10 +27,10 @@
     </div>
     <div class="container">
       <% errors.forEach(function(error) { %>
-        <div class="alert alert-danger" role="alert"><% error %></div>
+        <div class="alert alert-danger" role="alert"><%= error %></div>
       <% }) %>
-      <% errors.forEach(function(error) { %>
-        <div class="alert alert-danger" role="alert-info"><% info %></div>
+      <% infos.forEach(function(info) { %>
+        <div class="alert alert-success" role="alert"><%= info %></div>
       <% }) %>
     </div>
     

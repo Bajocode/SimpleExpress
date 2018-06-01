@@ -4,10 +4,9 @@ const LocalStrategy = require('passport-local').Strategy;
 
 /* eslint no-underscore-dangle: 0 */
 module.exports = () => {
-  passport.serializeUser((user, next) => next(null, User._id));
-  passport.deserializeUser((id, next) => User.findBy(id, (err, user) => next(err, user)));
+  passport.serializeUser((user, next) => next(null, user._id));
+  passport.deserializeUser((id, next) => User.findById(id, (err, user) => next(err, user)));
 };
-
 
 passport.use('login', new LocalStrategy((username, password, next) => {
   User.findOne({ username }, (queryErr, foundUser) => {

@@ -20,6 +20,19 @@ Router.get('/', (req, res, next) => {
     });
 });
 
+Router.route('/login')
+  .get((req, res) => res.render('login'))
+  .post(passport.authenticate('login', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true,
+  }));
+
+Router.get('/logout', (req, res) => {
+  req.logout();
+  return res.redirect('/');
+});
+
 Router.route('/signup')
   .get((req, res) => res.render('signup'))
   .post((req, res, next) => {
@@ -35,10 +48,13 @@ Router.route('/signup')
 
       const newUser = new User({ username, password });
 
-      newUser.save(next);
-      return res.redirect('/signup');
+      return newUser.save(next);
     });
-  });
+  }, passport.authenticate('login', {
+    successRedirect: '/',
+    failureRedirect: '/signup',
+    failureFlash: true,
+  }));
 
 Router.get('/users/:username', (req, res, next) => {
   const { username } = req.params;
@@ -48,5 +64,27 @@ Router.get('/users/:username', (req, res, next) => {
     return res.render('profile', { user });
   });
 });
+
+Router.route('/edit', ensureAuthenticated)
+  .get((req, res) => res.render('edit'))
+  .post((req, res, next) => {
+    req.user.displayName = req.body.displayName;
+    req.user.bio = req.body.bio;
+    req.user.save((err) => {
+      if (err) return next(err);
+
+      req.flash('info', 'Profile updated');
+      return res.redirect('/edit');
+    });
+  });
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    req.flash('info', 'You must be logged in to see this page');
+    res.redirect('/login');
+  }
+}
 
 module.exports = Router;
