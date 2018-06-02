@@ -9,11 +9,12 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 const passportConfig = require('./passportConfig');
+const config = require('./config');
 
 const app = express();
 const router = require('./router');
 
-mongoose.connect('mongodb://localhost:27017/test');
+mongoose.connect(config.dbUrl, { server: { socketOptions: { keepAlive: 120 } } });
 passportConfig();
 
 app.set('views', path.join(__dirname, 'views'));
