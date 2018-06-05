@@ -2,6 +2,8 @@ const express = require('express');
 const User = require('./models/User');
 const passport = require('passport');
 
+const authController = require('./controllers/authController');
+
 const Router = express.Router();
 
 Router.use((req, res, next) => {
@@ -21,12 +23,8 @@ Router.get('/', (req, res, next) => {
 });
 
 Router.route('/login')
-  .get((req, res) => res.render('login'))
-  .post(passport.authenticate('login', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true,
-  }));
+  .get(authController.getLogin)
+  .post(authController.postLogin);
 
 Router.get('/logout', (req, res) => {
   req.logout();
@@ -34,27 +32,8 @@ Router.get('/logout', (req, res) => {
 });
 
 Router.route('/signup')
-  .get((req, res) => res.render('signup'))
-  .post((req, res, next) => {
-    const { username } = req.body;
-    const { password } = req.body;
-
-    User.findOne({ username }, (err, user) => {
-      if (err) return next(err);
-      if (user) {
-        req.flash('error', 'User already exists');
-        return res.redirect('/signup');
-      }
-
-      const newUser = new User({ username, password });
-
-      return newUser.save(next);
-    });
-  }, passport.authenticate('login', {
-    successRedirect: '/',
-    failureRedirect: '/signup',
-    failureFlash: true,
-  }));
+  .get(authController.getSignup)
+  .post(authController.postSignup, authController.postLogin);
 
 Router.get('/users/:username', (req, res, next) => {
   const { username } = req.params;

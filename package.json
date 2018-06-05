@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node_modules/nodemon/bin/nodemon.js ./bin/www"
+    "start": "mongod & node_modules/nodemon/bin/nodemon.js ./bin/www"
   },
   "author": "Fabijan Bajo",
   "dependencies": {
