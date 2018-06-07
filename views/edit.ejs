@@ -2,7 +2,7 @@
 
 <h1>Edit profile</h1>
 
-<form action="/edit" method="post">
+<form action="/users/<%= currentUser.username %>/edit" method="post">
   <input name="displayName" type="text" class="form-control" placeholder="Display name" 
     value="<%= currentUser.displayName || "" %>">
   <textarea name="bio" class="form-control" placeholder="Something about yourself">

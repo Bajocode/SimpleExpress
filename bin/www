@@ -3,7 +3,7 @@
 const app = require('../app');
 const debug = require('debug')('Some text');
 const http = require('http');
-const config = require('../config');
+const config = require('../config/config');
 
 const port = normalizePort(process.env.PORT || config.serverPort);
 app.set('port', port);

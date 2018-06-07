@@ -8,11 +8,12 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
-const passportConfig = require('./passportConfig');
-const config = require('./config');
+const passportConfig = require('./config/passportConfig');
+const config = require('./config/config');
 
 const app = express();
-const router = require('./router');
+const IndexRouter = require('./routers/IndexRouter');
+const UserRouter = require('./routers/UserRouter');
 
 mongoose.connect(config.dbUrl, { server: { socketOptions: { keepAlive: 120 } } });
 passportConfig();
@@ -35,7 +36,8 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(router);
+app.use(IndexRouter);
+app.use('/users', UserRouter);
 
 app.use((req, res, next) => {
   next(httpError(404));
