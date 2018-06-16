@@ -1,6 +1,9 @@
 {
   "name": "simple-express",
   "version": "1.0.0",
+  "engines": {
+    "node": "8.9.4"
+  },
   "private": true,
   "scripts": {
     "start": "mongod & node_modules/nodemon/bin/nodemon.js ./bin/www",

@@ -11,17 +11,20 @@ const passport = require('passport');
 const passportConfig = require('./config/passportConfig');
 const config = require('./config/config');
 const helmet = require('helmet');
+const compression = require('compression');
 
 const app = express();
 const IndexRouter = require('./routers/IndexRouter');
 const UserRouter = require('./routers/UserRouter');
 
-mongoose.connect(config.dbUrl, { server: { socketOptions: { keepAlive: 120 } } });
+const dbUrl = config.mongoProdUrl || config.mongoDevUrl;
+mongoose.connect(dbUrl, { server: { socketOptions: { keepAlive: 120 } } });
 passportConfig();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(helmet());
 app.use(helmet.frameguard('sameorigin'));
 app.use(helmet.frameguard('deny'));
 app.use(helmet.noSniff());
@@ -32,6 +35,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(compression());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: '49?4_bY!y@M4q2*2]L|f', // session encryption
